@@ -29,6 +29,22 @@
             <li><a href="#includename-icon-color">Include script (alternate)</a></li>
             <li><a href="#a-full-example-might-look-like">Example configuration</a></li>
         </ul>
+        </li>
+        <li><a href="#-how-it-works-">How it works</a>
+        <ul>
+            <li><a href="#the-main-plugin">The main plugin</a></li>
+            <li><a href="#the-initialize-task">The initialize task</a></li>
+            <li><a href="#the-sync-task">The sync task</a></li>
+            <li><a href="#the-scriptable-project">The scriptable project</a></li>
+            <li><a href="#the-library-project">The library project</a></li>
+            <li><a href="#the-scripts-project">The scripts project</a></li>
+        </ul>
+        </li>
+        <li><a href="-useful-information-">Useful Information</a></li>
+        <ul>
+            <li><a href="#miscellaneous">Miscellaneous</a></li>
+            <li><a href="#links">Links</a></li>
+        </ul>
     </ul>
 
 </details>
