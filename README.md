@@ -1,5 +1,4 @@
 <div align="center">
-    <a href="https://github.com/IvanEOD/scriptable/blob/master/README.md"></a>
     <h1 align="center">Scriptable (Kotlin)</h1>
 
 ---
@@ -41,6 +40,10 @@
 - Uses [esbuild][esbuild] to bundle each script into its own file, only including dependencies that are actually used by the script.
 - To be able to efficiently create your own scripts you will need a basic understanding of [Kotlin][Kotlin Link].
 
+> [!WARNING]
+> This is a new project and is still in development.
+> Let me know if you run into any issues or have any questions.
+
 ### Built With
 
 
@@ -48,6 +51,13 @@
 * [![Gradle][Gradle Image]][Gradle Link]
 * [![Intellij Idea][Intellij Idea Image]][Intellij Idea Link]
 * [![Scriptable][Scriptable Image]][Scriptable Link]
+
+### Special thanks to the creators of all projects utilized by this project!
+
+ ###### Including but not limited to
+- @simonbs
+- @schl3ck
+- @evanw
 
 <p align="right">(<a href="#scriptable-kotlin">back to top</a>)</p>
 
