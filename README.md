@@ -1,11 +1,9 @@
-<a name="readme-top"></a>
-
-<br />
 <div align="center">
     <a href="https://github.com/IvanEOD/scriptable/blob/master/README.md"></a>
     <h1 align="center">Scriptable (Kotlin)</h1>
 
 ---
+
 <p align="center">
     Scriptable implementation in Kotlin
     </p>
@@ -21,14 +19,16 @@
                 <li><a href="#built-with">Built With</a></li>
             </ul>
         </li>
-        <li><a href="#projectconfiguration">Project Configuration</a>
+        <li><a href="#-project-configuration--">Project Configuration</a>
         <ul>
-            <li><a href="#environment">environment</a></li>
-            <li><a href="#properties">properties</a></li>
-            <li><a href="#icloudscriptabledirectory">iCloudScriptableDirectory</a></li>
-            <li><a href="#defaulticon">defaultIcon</a></li>
-            <li><a href="#defaultcolor">defaultColor</a></li>
-            <li><a href="#include">include</a></li>
+            <li><a href="#environment-name-">Environment</a></li>
+            <li><a href="#properties-name-">Properties</a></li>
+            <li><a href="#icloudscriptabledirectory-">iCloud Scriptable Directory</a></li>
+            <li><a href="#defaulticon-scripticon-">Default Icon</a></li>
+            <li><a href="#defaultcolor-scriptcolor-">Default Color</a></li>
+            <li><a href="#includename-modulename-icon-color-">Include script</a></li>
+            <li><a href="#includename-icon-color-">Include script (alternate)</a></li>
+            <li><a href="#a-full-example-might-look-like">Example configuration</a></li>
         </ul>
     </ul>
 
@@ -49,7 +49,7 @@
 * [![Intellij Idea][Intellij Idea Image]][Intellij Idea Link]
 * [![Scriptable][Scriptable Image]][Scriptable Link]
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#scriptable-kotlin">back to top</a>)</p>
 
 ## 🛠 Project Configuration 🛠 <a name="project-configuration"></a>
 
@@ -81,14 +81,14 @@
         }
       ```
 
-      - ### environment (name) <a name="environment"></a>
+      - ### environment (name)
         - Returns the value of the specified environment variable, or ***throws an error if the variable is not defined***.
         - This is a shortcut for `providers.environmentVariable(name).get()`.
         - If the environment variable has only been set since your IDE has been open, you may need to restart your IDE for the change to take effect.
         - ```kotlin
           environment("ICLOUD_SCRIPTABLE_DIRECTORY")
           ```
-      - ### properties (name) <a name="properties"></a>
+      - ### properties (name)
 
           - Returns the value of the specified Gradle property, or ***throws an error if the property is not defined***.
           - This is a shortcut for `providers.gradleProperty(name).get()`.
@@ -96,7 +96,7 @@
             properties("icloud.drive.path")
             ```
 
-      -  ### iCloudScriptableDirectory <a name="icloudscriptabledirectory"></a>
+      -  ### iCloudScriptableDirectory
           - **Required**.
           - You should have iCloud Drive setup on your PC, and this should be the path to the Scriptable folder in your iCloud Drive.
           - This is where the script files will be copied to when you run the "sync" task.
@@ -114,7 +114,7 @@
         - ```kotlin
           defaultIcon.set(ScriptIcon.Desktop)
           ```
-      - ### defaultColor [[ScriptColor](gradle/build-logic/src/main/kotlin/ScriptColor.kt)] <a name="defaultcolor"></a>
+      - ### defaultColor [[ScriptColor](gradle/build-logic/src/main/kotlin/ScriptColor.kt)]
         - Not required.
         - Defaults to `ScriptColor.DeepGray`
         - This is the value that will be implemented with `ScriptColor.Default`
@@ -122,7 +122,7 @@
           defaultColor.set(ScriptColor.DeepGray)
           ```
 
-      - ### include(name, moduleName, icon, color) <a name="include"></a>
+      - ### include(name, moduleName, icon, color)
         - Adds a scriptable to the project, automatically creating non-existent projects within the [scripts](scripts) project.
         - Scripts removed from this will not be deleted automatically, but will not be included in the project build any longer.
           - **name**:
@@ -182,6 +182,8 @@
         
           }
           ``` 
+
+<p align="right">(<a href="#scriptable-kotlin">back to top</a>)</p>
 </details>
 
 
