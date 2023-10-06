@@ -21,7 +21,7 @@
                 <li><a href="#built-with">Built With</a></li>
             </ul>
         </li>
-        <li><a href="#🛠-project-configuration-🛠">Project Configuration</a>
+        <li><a href="#projectconfiguration">Project Configuration</a>
         <ul>
             <li><a href="#environment">environment</a></li>
             <li><a href="#properties">properties</a></li>
@@ -51,7 +51,7 @@
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 🛠 Project Configuration 🛠
+## 🛠 Project Configuration 🛠 <a name="project-configuration"></a>
 
 <details><summary>
 
@@ -70,6 +70,7 @@
 
 
 - The project is configured using the [scriptable extension](gradle/build-logic/src/main/kotlin/scriptable/main/ScriptableExtension.kt):
+
     - ```kotlin
         plugins {
             id("scriptable-main")
@@ -87,7 +88,7 @@
         - ```kotlin
           environment("ICLOUD_SCRIPTABLE_DIRECTORY")
           ```
-      - ### properties (name)
+      - ### properties (name) <a name="properties"></a>
 
           - Returns the value of the specified Gradle property, or ***throws an error if the property is not defined***.
           - This is a shortcut for `providers.gradleProperty(name).get()`.
@@ -95,7 +96,7 @@
             properties("icloud.drive.path")
             ```
 
-      -  ### iCloudScriptableDirectory
+      -  ### iCloudScriptableDirectory <a name="icloudscriptabledirectory"></a>
           - **Required**.
           - You should have iCloud Drive setup on your PC, and this should be the path to the Scriptable folder in your iCloud Drive.
           - This is where the script files will be copied to when you run the "sync" task.
@@ -106,14 +107,14 @@
             // or
             iCloudScriptableDirectory.set(file("path/to/icloud/drive/Scriptable"))
             ```
-      - ### defaultIcon [[ScriptIcon](gradle/build-logic/src/main/kotlin/ScriptIcon.kt)]
+      - ### defaultIcon [[ScriptIcon](gradle/build-logic/src/main/kotlin/ScriptIcon.kt)] <a name="defaulticon"></a>
         - Not required.
         - Defaults to `ScriptIcon.Desktop`
         - This is the value that will be implemented with `ScriptIcon.Default`
         - ```kotlin
           defaultIcon.set(ScriptIcon.Desktop)
           ```
-      - ### defaultColor [[ScriptColor](gradle/build-logic/src/main/kotlin/ScriptColor.kt)]
+      - ### defaultColor [[ScriptColor](gradle/build-logic/src/main/kotlin/ScriptColor.kt)] <a name="defaultcolor"></a>
         - Not required.
         - Defaults to `ScriptColor.DeepGray`
         - This is the value that will be implemented with `ScriptColor.Default`
@@ -121,7 +122,7 @@
           defaultColor.set(ScriptColor.DeepGray)
           ```
 
-      - ### include(name, moduleName, icon, color)
+      - ### include(name, moduleName, icon, color) <a name="include"></a>
         - Adds a scriptable to the project, automatically creating non-existent projects within the [scripts](scripts) project.
         - Scripts removed from this will not be deleted automatically, but will not be included in the project build any longer.
           - **name**:
