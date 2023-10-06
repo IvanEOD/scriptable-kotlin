@@ -11,6 +11,11 @@ import org.gradle.plugins.ide.idea.model.IdeaModel
 import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
+import scriptable.*
+import scriptable.JsCompiler
+import scriptable.KotlinMultiplatform
+import scriptable.NoWarn
+import scriptable.OutputGranularity
 
 
 /**
@@ -44,15 +49,6 @@ class KotlinJsBase : Plugin<Project> {
 
         projectDir.resolve("src/jsMain/kotlin").apply { if (!exists()) mkdirs() }
 
-
-//        val build = tasks.named("build")
-
-//        val generateDeclarations by tasks.registering {
-//
-//        }
-
-//        task(":build").finalizedBy(generateDeclarations)
-
         tasks.configureEach<KotlinJsCompile> {
             kotlinOptions {
                 freeCompilerArgs += listOf(
@@ -66,14 +62,6 @@ class KotlinJsBase : Plugin<Project> {
 
     }
 
-    companion object {
-        internal const val NoWarn = "kotlin.mpp.stability.nowarn"
-        internal const val JsCompiler = "kotlin.js.compiler"
-        internal const val DomApiIncluded = "kotlin.js.stdlib.dom.api.included"
-        internal const val OutputGranularity = "kotlin.js.ir.output.granularity"
-        internal const val KotlinMultiplatform = "org.jetbrains.kotlin.multiplatform"
-        internal const val JsMainImplementation = "jsMainImplementation"
-    }
 }
 
 

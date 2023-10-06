@@ -61,21 +61,19 @@
 
 <p align="right">(<a href="#scriptable-kotlin">back to top</a>)</p>
 
-## 🛠 Project Configuration 🛠
-
 <details><summary>
 
-##### The Scriptable Extension
+## 🛠 Project Configuration 🛠
 
 </summary>
 
 
 ---
 
-###### The root [build.gradle.kts](build.gradle.kts) file implements the [main plugin](gradle/build-logic/src/main/kotlin/scriptable/main/ScriptableMain.kt), which is responsible for generating the projects used for each Scriptable script.
+###### The root [build.gradle.kts](build.gradle.kts) file implements the [main plugin][Main Plugin Link], which is responsible for generating the projects used for each Scriptable script.
 
 
-- The project is configured using the [scriptable extension](gradle/build-logic/src/main/kotlin/scriptable/main/ScriptableExtension.kt):
+- The project is configured using the [scriptable extension][Extension Link]:
 
     - ```kotlin
         plugins {
@@ -113,14 +111,21 @@
             // or
             iCloudScriptableDirectory.set(file("path/to/icloud/drive/Scriptable"))
             ```
-      - ### defaultIcon [[ScriptIcon](gradle/build-logic/src/main/kotlin/ScriptIcon.kt)] <a name="defaulticon"></a>
+      - ### defaultMinifyScripts
+          - Not required.
+          - Defaults to `true`
+          - If set to `true`, the scripts will be minified when they are bundled, helping keep the file size to a minimum.
+          - ```kotlin
+            defaultMinifyScripts.set(false)
+            ```
+      - ### defaultIcon [[ScriptIcon][Script Icon Link]] <a name="defaulticon"></a>
         - Not required.
         - Defaults to `ScriptIcon.Desktop`
         - This is the value that will be implemented with `ScriptIcon.Default`
         - ```kotlin
           defaultIcon.set(ScriptIcon.Desktop)
           ```
-      - ### defaultColor [[ScriptColor](gradle/build-logic/src/main/kotlin/ScriptColor.kt)]
+      - ### defaultColor [[ScriptColor][Script Color Link]]
         - Not required.
         - Defaults to `ScriptColor.DeepGray`
         - This is the value that will be implemented with `ScriptColor.Default`
@@ -141,14 +146,14 @@
             - Not required.
             - Defaults to `ScriptIcon.Default`, which uses the project default defined above.
             - Acceptable values are:
-              - [ScriptIcon](gradle/build-logic/src/main/kotlin/ScriptIcon.kt) enum. (e.g. `ScriptIcon.Desktop`, `ScriptIcon.UserShield`)
+              - [ScriptIcon][Script Icon Link] enum. (e.g. `ScriptIcon.Desktop`, `ScriptIcon.UserShield`)
               - ScriptIcon enum name. (e.g. `"Desktop"`, `"UserShield"`)
               - String value shown in the Scriptable app. (e.g. `"desktop"`, `"user-shield"`)
           - **color**:
             - Not required.
             - Defaults to `ScriptColor.Default`, which uses the project default defined above.
             - Acceptable values are:
-              - [ScriptColor](gradle/build-logic/src/main/kotlin/ScriptColor.kt) enum. (e.g. `ScriptColor.DeepGray`, `ScriptColor.DeepBlue`)
+              - [ScriptColor][Script Color Link] enum. (e.g. `ScriptColor.DeepGray`, `ScriptColor.DeepBlue`)
               - ScriptColor enum name. (e.g. `"DeepGray"`, `"DeepBlue"`)
               - String value shown in the Scriptable app. (e.g. `"deep-gray"`, `"deep-blue"`)
         - ```kotlin
@@ -190,8 +195,84 @@
           ``` 
 
 <p align="right">(<a href="#scriptable-kotlin">back to top</a>)</p>
+
 </details>
 
+<details><summary>
+
+## 🔍 How it works 🔍
+
+</summary>
+
+
+---
+
+> [!IMPORTANT]
+>  - You need to have iCloud Drive setup on your PC, and you need to have the Scriptable app installed on your iOS device.
+>  - Once you've done that, you need to set up the [project configuration](#-project-configuration-).
+>  - If you want to use your system environment for the iCloud Path, you will need to restart your IDE for the change to take effect, unless you happened to have it saved already.
+
+- The [main plugin][Main Plugin Link] is responsible for generating the projects used for each Scriptable script.
+    - To add a script, you need to add it to the [project configuration](#-project-configuration-).
+    - To remove a script, you need to first remove it from the configuration, and then manually delete the files. If you don't remove it from the configuration, it will repopulate to the default new script setup.
+    
+- The [initialize task][Initialize Task Link] 
+  - Triggers evaluation of your configuration and applies any changes you have made.
+  - This should be triggered automatically, but if you need to manually trigger it you can run the `initialize` task.
+  - This task will automatically run before the `sync` task.
+  - Only scripts that have been added, changed, or removed will be effected by this task.
+  - This task will not delete any files, only create or update them.
+
+- The [sync task][Sync Task Link] 
+  - Builds the project, processing it into javascript code that can be run by the Scriptable app.
+  - Packages the scripts into their own files, only including dependencies that are actually used by the script.
+  - Copies the scripts to the iCloud Scriptable directory, so you can run/test them directly on you iOS device.
+  - Only processes scripts that have been effected by changes you have made since the last sync. 
+  - This can be applied per script in the gradle menu, or in the root project to sync all scripts.
+
+- The [scriptable project][Scriptable Project Link]
+  - Is where the declarations for the Scriptable API are stored. The [ios-scriptable-types][ios-scriptable-types Link] project is used to generate these declarations.
+  - This project is automatically included in the [scripts project][Scripts Project Link] and the [library project][Library Project Link].
+  - None of this will be compiled into your script, it will use the declarations to provide type information for the Scriptable API.
+
+- The [library project][Library Project Link]
+  - Is where you can create your own libraries to be used by your scripts.
+  - The scripts will automatically have access to this library, and will only include what they need from it when they are bundled.
+  
+- The [scripts project][Scripts Project Link]
+  - Is where you can create your own scripts.
+  - A project will be created in this directory for each script you add to the [project configuration](#-project-configuration-).
+  - The scripts will automatically have access to the [scriptable project][Scriptable Project Link] and the [library project][Library Project Link], and will only include what they need from them when they are bundled.
+
+</details>
+
+<details><summary>
+
+## 📚 Useful Information 📚
+
+</summary>
+
+
+---
+
+- ### Miscellaneous
+  -  The `gradle.properties` file in each script project is updated automatically, changes made to it will be overwritten automatically. Make changes in the root `build.gradle.kts` file.
+
+- ### Links
+  - [Scriptable App][Scriptable Link]
+  - [Scriptable Docs][Scriptable Docs Link]
+  - [iOS Scriptable Types][ios-scriptable-types Link]
+  - [Kotlin][Kotlin Link]
+  - [Kotlin DSL][Kotlin DSL Link]
+  - [Gradle][Gradle Link]
+  - [Intellij Idea][Intellij Idea Link]
+  - [esbuild][esbuild]
+  - [dukat][dukat Link]
+  - [External Declarations][External Declarations Link]
+
+
+
+</details>
 
 
 [Scriptable Link]: https://scriptable.app/
@@ -211,3 +292,16 @@
 [Gradle Image]: https://img.shields.io/badge/Gradle-8.3-yellowgreen.svg?logo=gradle&style=flat
 [Intellij Idea Link]: https://www.jetbrains.com/idea/
 [Intellij Idea Image]: https://img.shields.io/badge/Intellij-2023.2.2-yellowgreen.svg?logo=intellij-idea&style=flat
+
+
+[Script Icon Link]: gradle/build-logic/src/main/kotlin/ScriptIcon.kt
+[Script Color Link]: gradle/build-logic/src/main/kotlin/ScriptColor.kt
+
+[Main Plugin Link]: gradle/build-logic/src/main/kotlin/scriptable/main/ScriptableMain.kt
+[Extension Link]: gradle/build-logic/src/main/kotlin/scriptable/main/ScriptableExtension.kt
+[Initialize Task Link]: https://github.com/IvanEOD/scriptable-kotlin/blob/8bcdec20f517bf954db3be8ed03c64778c0a2ffa/gradle/build-logic/src/main/kotlin/scriptable/main/ScriptableMain.kt#L68C61-L68C61
+[Sync Task Link]: https://github.com/IvanEOD/scriptable-kotlin/blob/8bcdec20f517bf954db3be8ed03c64778c0a2ffa/gradle/build-logic/src/main/kotlin/scriptable/script/ScriptableScript.kt#L124
+
+[Scriptable Project Link]: scriptable
+[Library Project Link]: library
+[Scripts Project Link]: scripts

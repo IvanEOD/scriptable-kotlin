@@ -40,22 +40,27 @@ class ScriptableScript : Plugin<Project> {
         }
 
         val packageScriptable = tasks.register<PackageScriptable>("packageScriptable")
-        val syncToCloud = tasks.register<SyncToCloud>("syncToCloud")
+        val syncToCloud = tasks.register<SyncToCloud>("sync")
+        val build = tasks.named("build")
+        val jsProductionExecutableCompileSync = tasks.named("jsProductionExecutableCompileSync")
+
+        build {
+            finalizedBy(packageScriptable)
+        }
 
         packageScriptable {
+            dependsOn(jsProductionExecutableCompileSync)
+            dependsOn(build)
+            finalizedBy(syncToCloud)
             inputFile = findModulePackageDirectory()
         }
 
         syncToCloud {
+            dependsOn(packageScriptable)
             inputFile = packageScriptable.flatMap { it.outputFile }
             outputFile = findScriptableExtension().let { extension ->
                 extension.iCloudScriptableDirectory.map { it.file("${extension[project].scriptableName}.js") }
             }
-        }
-
-        tasks.named("build").configure {
-            dependsOn(packageScriptable)
-            dependsOn(syncToCloud)
         }
 
     }
@@ -64,7 +69,6 @@ class ScriptableScript : Plugin<Project> {
 abstract class PackageScriptable : DefaultTask() {
 
     init {
-        group = ScriptableTaskGroup
         description = "Package Scriptable module into it's own source file for Scriptable."
     }
 

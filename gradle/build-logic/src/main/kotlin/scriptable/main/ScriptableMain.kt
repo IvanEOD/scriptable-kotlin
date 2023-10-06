@@ -2,17 +2,16 @@ package scriptable.main
 
 import ScriptColor
 import ScriptIcon
-import SettingsScriptableEnd
-import SettingsScriptableStart
 import findScriptableExtension
 import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.Task
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.wrapper.Wrapper
 import org.gradle.kotlin.dsl.*
 import scriptable.ScriptableTaskGroup
+import scriptable.SettingsScriptableEnd
+import scriptable.SettingsScriptableStart
 import setScriptableProperties
 import version
 import java.io.File
@@ -35,7 +34,6 @@ class ScriptableMain : Plugin<Project> {
                 mavenCentral()
 
             }
-
         }
 
         tasks.withType<Wrapper> {
@@ -44,14 +42,13 @@ class ScriptableMain : Plugin<Project> {
 
         extensions.create<ScriptableExtension>("scriptable", this)
 
-        val initializeScriptableProject = tasks.create<InitializeScriptableProject>("initializeScriptableProject")
+        val initializeScriptableProject = tasks.create<InitializeScriptableProject>("initialize")
 
         gradle.beforeProject {
             initializeScriptableProject.initialize()
         }
 
         val buildAllScriptables by tasks.registering {
-            group = ScriptableTaskGroup
             dependsOn(initializeScriptableProject)
             childProjects.forEach { (name, project) ->
                 if (name == "scripts") {

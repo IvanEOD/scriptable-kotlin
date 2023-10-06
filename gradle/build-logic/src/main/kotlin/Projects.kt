@@ -7,6 +7,10 @@ import org.gradle.kotlin.dsl.hasPlugin
 import org.gradle.kotlin.dsl.the
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
+import scriptable.ScriptableColor
+import scriptable.ScriptableIcon
+import scriptable.ScriptableMinify
+import scriptable.ScriptableName
 import scriptable.main.ScriptableExtension
 import scriptable.main.ScriptableMetadata
 import java.io.File
@@ -23,13 +27,7 @@ fun Project.properties(name: String): String = providers.gradleProperty(name).ge
 fun Project.version(name: String): String = properties("$name.version")
 fun Project.environment(name: String): String = providers.environmentVariable(name).get()
 
-internal const val SettingsScriptableStart = "// Scriptables Start"
-internal const val SettingsScriptableEnd = "// Scriptables End"
 
-internal const val ScriptableName = "scriptable.name"
-internal const val ScriptableIcon = "scriptable.icon"
-internal const val ScriptableColor = "scriptable.color"
-internal const val ScriptableMinify = "scriptable.minify"
 private val scriptablePropertyNames = listOf(ScriptableName, ScriptableIcon, ScriptableColor, ScriptableMinify)
 
 internal inline val Project.jsModuleName: String
