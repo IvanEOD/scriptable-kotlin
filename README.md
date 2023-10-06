@@ -55,13 +55,13 @@
 ### Special thanks to the creators of all projects utilized by this project!
 
  ###### Including but not limited to
-- @simonbs
-- @schl3ck
-- @evanw
+- [@simonbs](https://github.com/simonbs)
+- [@schl3ck](https://github.com/schl3ck)
+- [@evanw](https://github.com/evanw)
 
 <p align="right">(<a href="#scriptable-kotlin">back to top</a>)</p>
 
-## 🛠 Project Configuration 🛠 <a name="project-configuration"></a>
+## 🛠 Project Configuration 🛠
 
 <details><summary>
 
@@ -71,10 +71,6 @@
 
 
 ---
-
-<a name="build-gradle-kts"></a>
-
-
 
 ###### The root [build.gradle.kts](build.gradle.kts) file implements the [main plugin](gradle/build-logic/src/main/kotlin/scriptable/main/ScriptableMain.kt), which is responsible for generating the projects used for each Scriptable script.
 
@@ -204,9 +200,6 @@
 
 [ios-scriptable-types Link]: https://github.com/schl3ck/ios-scriptable-types
 [esbuild]: https://github.com/evanw/esbuild
-[build-gradle-kts]: https://TODO()
-[main-plugin]: https://TODO()
-[scriptable-extension]: https://TODO()
 [dukat Link]: https://github.com/Kotlin/dukat
 [External Declarations Link]: https://kotlinlang.org/docs/js-interop.html#external-modifier
 
