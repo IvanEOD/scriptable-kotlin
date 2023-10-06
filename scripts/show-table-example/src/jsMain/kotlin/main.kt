@@ -1,8 +1,14 @@
-
 /**
  * show-table-example
  */
             
 fun main() {
-    println("Hello Scriptable, from Kotlin!")
+    val table = buildTable {
+        row {
+            isHeader()
+            text("Example Title", "example subtitle")
+        }
+    }
+
+    table.present()
 }

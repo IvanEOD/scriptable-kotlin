@@ -3,10 +3,27 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/gradle/build-logic" name="build-logic">
+                <projects>
+                  <project path="$PROJECT_DIR$/gradle/build-logic" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/gradle/build-logic" />
+            <option value="$PROJECT_DIR$/library" />
+            <option value="$PROJECT_DIR$/scriptable" />
+            <option value="$PROJECT_DIR$/scripts" />
+            <option value="$PROJECT_DIR$/scripts/show-alert-example" />
+            <option value="$PROJECT_DIR$/scripts/show-table-example" />
           </set>
         </option>
       </GradleProjectSettings>

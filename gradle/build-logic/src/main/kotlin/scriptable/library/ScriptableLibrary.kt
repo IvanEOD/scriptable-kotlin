@@ -9,11 +9,11 @@ import scriptable.js.KotlinJsBase
 
 
 /**
- *  Scriptable Module
+ *  Scriptable Library
  *
  * @author IvanEOD ( 10/5/2023 at 3:54 PM EST )
  */
-class ScriptableModule : Plugin<Project> {
+class ScriptableLibrary : Plugin<Project> {
     override fun apply(target: Project): Unit = with (target) {
         pluginManager.apply<KotlinJsBase>()
 

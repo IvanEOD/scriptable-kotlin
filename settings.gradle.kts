@@ -1,12 +1,23 @@
+rootProject.name = "scriptable-kotlin"
+
 pluginManagement {
+    includeBuild("./gradle/build-logic")
     repositories {
         mavenCentral()
         gradlePluginPortal()
     }
+    plugins {
+        val kotlinVersion = extra["kotlin.version"] as String
+        kotlin("multiplatform") version kotlinVersion
+
+    }
+
 }
 
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
-}
+include("library")
+include("scriptable")
 
-rootProject.name = "scriptable-kotlin"
+// Scriptables Start
+include(":scripts:show-table-example")
+include(":scripts:show-alert-example")
+// Scriptables End

@@ -1,14 +1,14 @@
-package scriptable
-
-
 import org.gradle.api.DomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.plugins.PluginManager
 import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.hasPlugin
+import org.gradle.kotlin.dsl.the
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
-import scriptable.main.ScriptMeta
+import scriptable.main.ScriptableExtension
+import scriptable.main.ScriptableMetadata
 import java.io.File
 import scriptable.main.ScriptableMain
 
@@ -29,7 +29,8 @@ internal const val SettingsScriptableEnd = "// Scriptables End"
 internal const val ScriptableName = "scriptable.name"
 internal const val ScriptableIcon = "scriptable.icon"
 internal const val ScriptableColor = "scriptable.color"
-private val scriptablePropertyNames = listOf(ScriptableName, ScriptableIcon, ScriptableColor)
+internal const val ScriptableMinify = "scriptable.minify"
+private val scriptablePropertyNames = listOf(ScriptableName, ScriptableIcon, ScriptableColor, ScriptableMinify)
 
 internal inline val Project.jsModuleName: String
     get() = project.name
@@ -39,26 +40,40 @@ internal inline val Project.jsScriptableIcon: String
     get() = properties(ScriptableIcon)
 internal inline val Project.jsScriptableColor: String
     get() = properties(ScriptableColor)
+internal inline val Project.jsScriptableMinify: Boolean
+    get() = properties(ScriptableMinify).toBoolean()
 
-private fun Project.findScriptableRoot(): Project =
+internal fun Project.findScriptableRoot(): Project =
     if (plugins.hasPlugin(ScriptableMain::class)) this
     else parent?.findScriptableRoot() ?: this
 
-private inline val Project.rootBuildDirectory get() = findScriptableRoot().layout.buildDirectory.asFile.get()
-internal fun Project.findModuleBuildDirectory() = rootBuildDirectory.resolve("js/packages/$jsModuleName/kotlin")
-internal fun Project.findJsModuleFile() = findModuleBuildDirectory().resolve("$jsModuleName.js").takeIf { it.exists() }
-internal fun Project.findCoreLibrary() = findModuleBuildDirectory().resolve("scriptable/library").apply { if (!exists()) mkdirs() }
+internal fun Project.findScriptableExtension(): ScriptableExtension =
+    findScriptableRoot().the<ScriptableExtension>()
 
+internal fun Project.findScriptMetadata(extension: ScriptableExtension) =
+    extension.scripts.get().find { it.moduleName == jsModuleName }
+
+internal inline fun <reified T> PluginManager.apply() = apply(T::class.java)
+
+private inline val Project.rootBuildDirectory get() = findScriptableRoot().layout.buildDirectory
+internal fun Project.findRootPackagesDirectory() = rootBuildDirectory.dir("js/packages")
+internal fun Project.findModulePackageDirectory() = rootBuildDirectory.dir("js/packages/$jsModuleName")
+internal fun Project.findModuleBuildDirectory() = rootBuildDirectory.dir("js/packages/$jsModuleName/kotlin")
+internal fun Project.findJsModuleFile() = rootBuildDirectory.file("js/packages/$jsModuleName/kotlin/$jsModuleName.js")
+internal fun Project.findScriptableLibrary() = rootBuildDirectory.dir("scriptable/library")
+internal fun Project.findScriptableCache() = rootBuildDirectory.dir("scriptable/cache")
 
 private data class ScriptableProperties(
     val name: String,
     val icon: String,
     val color: String,
+    val minify: String
 ) {
     fun isMatch(name: String, value: String) = when (name) {
         ScriptableName -> this.name == value
         ScriptableIcon -> this.icon == value
         ScriptableColor -> this.color == value
+        ScriptableMinify -> this.minify == value
         else -> false
     }
 
@@ -67,6 +82,7 @@ private data class ScriptableProperties(
             ScriptableName -> copy(name = value)
             ScriptableIcon -> copy(icon = value)
             ScriptableColor -> copy(color = value)
+            ScriptableMinify -> copy(minify = value)
             else -> this
         }
 
@@ -77,6 +93,7 @@ private data class ScriptableProperties(
             "$ScriptableName=$name",
             "$ScriptableIcon=$icon",
             "$ScriptableColor=$color",
+            "$ScriptableMinify=$minify",
         )
         file.writeText(newLines.joinToString("\n"))
     }
@@ -88,31 +105,53 @@ private data class ScriptableProperties(
             val name = lines.find { it.startsWith(ScriptableName) }?.substringAfter("=") ?: ""
             val icon = lines.find { it.startsWith(ScriptableIcon) }?.substringAfter("=") ?: ""
             val color = lines.find { it.startsWith(ScriptableColor) }?.substringAfter("=") ?: ""
-            return ScriptableProperties(name, icon, color)
+            val minify = lines.find { it.startsWith(ScriptableMinify) }?.substringAfter("=") ?: ""
+            return ScriptableProperties(name, icon, color, minify)
         }
 
 
     }
 }
 
-internal fun Project.setScriptableProperties(
-    meta: ScriptMeta,
+private fun scriptableProperties(
+    meta: ScriptableMetadata,
     defaultIcon: ScriptIcon,
     defaultColor: ScriptColor,
-) {
+    defaultMinify: Boolean
+): ScriptableProperties {
     val icon = if (meta.icon.isDefault()) defaultIcon.value else meta.icon.value
     val color = if (meta.color.isDefault()) defaultColor.value else meta.color.value
-    val properties = ScriptableProperties(meta.scriptableName, icon, color)
-    setScriptableProperties(properties)
+    val minify = (meta.minify ?: defaultMinify).toString()
+    return ScriptableProperties(meta.scriptableName, icon, color, minify)
 }
+
+internal fun Project.setScriptableProperties(
+    meta: ScriptableMetadata,
+    defaultIcon: ScriptIcon,
+    defaultColor: ScriptColor,
+    defaultMinify: Boolean,
+): Boolean = setScriptableProperties(scriptableProperties(meta, defaultIcon, defaultColor, defaultMinify))
+
+internal fun setScriptableProperties(
+    file: File,
+    meta: ScriptableMetadata,
+    defaultIcon: ScriptIcon,
+    defaultColor: ScriptColor,
+    defaultMinify: Boolean,
+): Boolean = setScriptableProperties(scriptableProperties(meta, defaultIcon, defaultColor, defaultMinify), file)
+
 
 private fun Project.setScriptableProperties(
     properties: ScriptableProperties,
-) {
-    val propertiesFile = getGradlePropertiesFile()
-    val scriptableProperties = ScriptableProperties.fromFile(propertiesFile)
-    if (properties != scriptableProperties) properties.writeTo(propertiesFile)
-}
+): Boolean = setScriptableProperties(properties, getGradlePropertiesFile())
+
+private fun setScriptableProperties(
+    properties: ScriptableProperties,
+    propertiesFile: File,
+): Boolean = if (properties != ScriptableProperties.fromFile(propertiesFile)) {
+    properties.writeTo(propertiesFile)
+    true
+} else false
 
 internal fun Project.setScriptableProperty(
     name: String,
@@ -125,10 +164,9 @@ internal fun Project.setScriptableProperty(
 }
 
 
-private fun Project.getGradlePropertiesFile(): File = projectDir.resolve("gradle.properties")
+private fun Project.getGradlePropertiesFile(): File = projectDir
+    .resolve("gradle.properties")
     .apply { if (!exists()) createNewFile() }
-
-
 
 internal fun Project.ext(
     propertyName: String,
