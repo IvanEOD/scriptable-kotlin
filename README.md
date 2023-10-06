@@ -261,6 +261,9 @@
   - A project will be created in this directory for each script you add to the [project configuration](#-project-configuration-).
   - The scripts will automatically have access to the [scriptable project][Scriptable Project Link] and the [library project][Library Project Link], and will only include what they need from them when they are bundled.
 
+
+<p align="right">(<a href="#scriptable-kotlin">back to top</a>)</p>
+
 </details>
 
 <details><summary>
@@ -288,7 +291,7 @@
   - [External Declarations][External Declarations Link]
 
 
-
+<p align="right">(<a href="#scriptable-kotlin">back to top</a>)</p>
 </details>
 
 
