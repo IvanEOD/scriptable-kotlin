@@ -276,6 +276,7 @@
 ---
 
 - ### Miscellaneous
+  -  If you don't already have it, you will need `esbuild` from npm. `npm install --save-exact --save-dev esbuild` Newly installing this may require IDE restart for gradle to recognize it.
   -  The `gradle.properties` file in each script project is updated automatically, changes made to it will be overwritten automatically. Make changes in the root `build.gradle.kts` file.
 
 - ### Links
