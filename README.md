@@ -11,22 +11,22 @@
 ---
 
 <details>
-    <summary>Table of Contents</summary>
+    <summary><a href="#table-of-contents">Table of Contents</a></summary>
     <ul>
         <li><a href="#about-the-project">About the Project</a>
             <ul>
                 <li><a href="#built-with">Built With</a></li>
             </ul>
         </li>
-        <li><a href="#-project-configuration--">Project Configuration</a>
+        <li><a href="#-project-configuration-">Project Configuration</a>
         <ul>
-            <li><a href="#environment-name-">Environment</a></li>
-            <li><a href="#properties-name-">Properties</a></li>
-            <li><a href="#icloudscriptabledirectory-">iCloud Scriptable Directory</a></li>
+            <li><a href="#environment-name">Environment</a></li>
+            <li><a href="#properties-name">Properties</a></li>
+            <li><a href="#icloudscriptabledirectory">iCloud Scriptable Directory</a></li>
             <li><a href="#defaulticon-scripticon-">Default Icon</a></li>
-            <li><a href="#defaultcolor-scriptcolor-">Default Color</a></li>
-            <li><a href="#includename-modulename-icon-color-">Include script</a></li>
-            <li><a href="#includename-icon-color-">Include script (alternate)</a></li>
+            <li><a href="#defaultcolor-scriptcolor">Default Color</a></li>
+            <li><a href="#includename-modulename-icon-color">Include script</a></li>
+            <li><a href="#includename-icon-color">Include script (alternate)</a></li>
             <li><a href="#a-full-example-might-look-like">Example configuration</a></li>
         </ul>
     </ul>
