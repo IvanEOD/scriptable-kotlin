@@ -1,5 +1,6 @@
 package scriptable.script
 
+import ScriptColor
 import apply
 import findModuleBuildDirectory
 import findModulePackageDirectory
@@ -147,7 +148,9 @@ abstract class SyncToCloud : DefaultTask() {
         }
         logger.info("Updating ${script.moduleName}...")
         val inputText = inputFile.get().asFile.readText()
-        val header = buildScriptableHeader(script)
+        val color = (if (script.color.isDefault()) extension.defaultColor.get() else script.color).let { if (it.isDefault()) ScriptColor.DeepGray else it }
+        val icon = (if (script.icon.isDefault()) extension.defaultIcon.get() else script.icon).let { if (it.isDefault()) ScriptIcon.Desktop else it }
+        val header = buildScriptableHeader(color.value, icon.value)
         outputFile.get().asFile.apply { if (!exists()) createNewFile() }
             .writeText("$header\n$inputText")
 
@@ -155,13 +158,15 @@ abstract class SyncToCloud : DefaultTask() {
 
 
     companion object {
-        private fun buildScriptableHeader(meta: ScriptableMetadata): String {
+        private fun buildScriptableHeader(color: String, icon: String): String {
             return """
                 // Variables used by Scriptable.
                 // These must be at the very top of the file. Do not edit.
-                // icon-color: ${meta.color}; icon-glyph: ${meta.icon};
+                // icon-color: ${color}; icon-glyph: ${icon};
             """.trimIndent()
         }
+
+
     }
 
 }
