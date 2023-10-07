@@ -266,6 +266,42 @@
 
 </details>
 
+
+<details><summary>
+
+## 📝 Examples 📝
+
+</summary>
+
+
+---
+
+- You can create your own [Kotlin DSL][Kotlin DSL Link] style builders.
+    - [TableBuilder.kt][Table Builder Link] is a simple example of a builder that can be used to create a table for use in a Scriptable script.
+      - ```kotlin
+        fun main() {
+            val table = buildTable {
+                row {
+                    isHeader()
+                    text("Example Title", "example subtitle") 
+                }
+            }
+            table.present()
+        }
+        ``` 
+      - The Javascript equivalent:
+      - ```js
+        const table = new UITable()       
+        const headerRow = new UITableRow()
+        headerRow.isHeader = true
+        headerRow.addText("Example Title", "example subtitle")
+        table.addRow(headerRow)
+        await table.present()
+        ```
+  
+</details>
+
+
 <details><summary>
 
 ## 📚 Useful Information 📚
@@ -322,6 +358,11 @@
 [Extension Link]: gradle/build-logic/src/main/kotlin/scriptable/main/ScriptableExtension.kt
 [Initialize Task Link]: https://github.com/IvanEOD/scriptable-kotlin/blob/8bcdec20f517bf954db3be8ed03c64778c0a2ffa/gradle/build-logic/src/main/kotlin/scriptable/main/ScriptableMain.kt#L68C61-L68C61
 [Sync Task Link]: https://github.com/IvanEOD/scriptable-kotlin/blob/8bcdec20f517bf954db3be8ed03c64778c0a2ffa/gradle/build-logic/src/main/kotlin/scriptable/script/ScriptableScript.kt#L124
+
+[Table Builder Link]: library/src/jsMain/kotlin/TableBuilder.kt
+[Table Builder Example Link]: scripts/show-table-example/src/jsMain/kotlin/main.kt
+
+
 
 [Scriptable Project Link]: scriptable
 [Library Project Link]: library
