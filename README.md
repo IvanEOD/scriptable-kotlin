@@ -29,6 +29,22 @@
             <li><a href="#includename-icon-color">Include script (alternate)</a></li>
             <li><a href="#a-full-example-might-look-like">Example configuration</a></li>
         </ul>
+        </li>
+        <li><a href="#-how-it-works-">How it works</a>
+        <ul>
+            <li><a href="#the-main-plugin">The main plugin</a></li>
+            <li><a href="#the-initialize-task">The initialize task</a></li>
+            <li><a href="#the-sync-task">The sync task</a></li>
+            <li><a href="#the-scriptable-project">The scriptable project</a></li>
+            <li><a href="#the-library-project">The library project</a></li>
+            <li><a href="#the-scripts-project">The scripts project</a></li>
+        </ul>
+        </li>
+        <li><a href="-useful-information-">Useful Information</a></li>
+        <ul>
+            <li><a href="#miscellaneous">Miscellaneous</a></li>
+            <li><a href="#links">Links</a></li>
+        </ul>
     </ul>
 
 </details>
@@ -212,37 +228,41 @@
 >  - Once you've done that, you need to set up the [project configuration](#-project-configuration-).
 >  - If you want to use your system environment for the iCloud Path, you will need to restart your IDE for the change to take effect, unless you happened to have it saved already.
 
-- The [main plugin][Main Plugin Link] is responsible for generating the projects used for each Scriptable script.
+- ### The [main plugin][Main Plugin Link]
+    - Responsible for generating the projects used for each Scriptable script.
     - To add a script, you need to add it to the [project configuration](#-project-configuration-).
     - To remove a script, you need to first remove it from the configuration, and then manually delete the files. If you don't remove it from the configuration, it will repopulate to the default new script setup.
     
-- The [initialize task][Initialize Task Link] 
+- ### The [initialize task][Initialize Task Link] 
   - Triggers evaluation of your configuration and applies any changes you have made.
   - This should be triggered automatically, but if you need to manually trigger it you can run the `initialize` task.
   - This task will automatically run before the `sync` task.
   - Only scripts that have been added, changed, or removed will be effected by this task.
   - This task will not delete any files, only create or update them.
 
-- The [sync task][Sync Task Link] 
+- ### The [sync task][Sync Task Link] 
   - Builds the project, processing it into javascript code that can be run by the Scriptable app.
   - Packages the scripts into their own files, only including dependencies that are actually used by the script.
   - Copies the scripts to the iCloud Scriptable directory, so you can run/test them directly on you iOS device.
   - Only processes scripts that have been effected by changes you have made since the last sync. 
   - This can be applied per script in the gradle menu, or in the root project to sync all scripts.
 
-- The [scriptable project][Scriptable Project Link]
+- ### The [scriptable project][Scriptable Project Link]
   - Is where the declarations for the Scriptable API are stored. The [ios-scriptable-types][ios-scriptable-types Link] project is used to generate these declarations.
   - This project is automatically included in the [scripts project][Scripts Project Link] and the [library project][Library Project Link].
   - None of this will be compiled into your script, it will use the declarations to provide type information for the Scriptable API.
 
-- The [library project][Library Project Link]
+- ### The [library project][Library Project Link]
   - Is where you can create your own libraries to be used by your scripts.
   - The scripts will automatically have access to this library, and will only include what they need from it when they are bundled.
   
-- The [scripts project][Scripts Project Link]
+- ### The [scripts project][Scripts Project Link]
   - Is where you can create your own scripts.
   - A project will be created in this directory for each script you add to the [project configuration](#-project-configuration-).
   - The scripts will automatically have access to the [scriptable project][Scriptable Project Link] and the [library project][Library Project Link], and will only include what they need from them when they are bundled.
+
+
+<p align="right">(<a href="#scriptable-kotlin">back to top</a>)</p>
 
 </details>
 
@@ -256,6 +276,7 @@
 ---
 
 - ### Miscellaneous
+  -  If you don't already have it, you will need `esbuild` from npm. `npm install --save-exact --save-dev esbuild` Newly installing this may require IDE restart for gradle to recognize it.
   -  The `gradle.properties` file in each script project is updated automatically, changes made to it will be overwritten automatically. Make changes in the root `build.gradle.kts` file.
 
 - ### Links
@@ -271,7 +292,7 @@
   - [External Declarations][External Declarations Link]
 
 
-
+<p align="right">(<a href="#scriptable-kotlin">back to top</a>)</p>
 </details>
 
 
