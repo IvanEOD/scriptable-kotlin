@@ -40,6 +40,11 @@
             <li><a href="#the-scripts-project">The scripts project</a></li>
         </ul>
         </li>
+        <li><a href="#-examples-">Examples</a>
+        <ul>
+            <li><a href="-uitable">UITable</a></li>
+            <li><a href="-alert">Alert</a></li>
+        </ul>
         <li><a href="-useful-information-">Useful Information</a></li>
         <ul>
             <li><a href="#miscellaneous">Miscellaneous</a></li>
@@ -266,21 +271,23 @@
 
 </details>
 
-
 <details><summary>
 
 ## 📝 Examples 📝
 
 </summary>
 
+###### The [library][Library Project Link] and [scripts][Scripts Project Link] contain the source code used in these examples.
+
+<details><summary>
+
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UITable:
+
+</summary>
 
 ---
 
-<detauls><summary>
-
-### UITable
-
-</summary>
+<a name="table-builder-example"></a>
 
 - You can create your own [Kotlin DSL][Kotlin DSL Link] style builders.
     - [TableBuilder.kt][Table Builder Link] is a simple example of a builder that can be used to create a table for use in a Scriptable script.
@@ -307,9 +314,26 @@
 
     - The result:
       -![Kotlin Table Present][kotlin-table-present Image]
-    </details>
 
 
+
+---
+<p align="right">(<a href="#scriptable-kotlin">back to top</a>)</p>
+</details>
+
+<details><summary>
+
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Alert:
+    
+</summary></details>
+
+
+
+
+---
+<p align="right">(<a href="#scriptable-kotlin">back to top</a>)</p>
+</details>
+</details>
 
 <details><summary>
 
@@ -317,6 +341,7 @@
 
 </summary>
 
+###### Useful information that might help if you are running into any issues using the project.
 
 ---
 
