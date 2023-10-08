@@ -276,6 +276,12 @@
 
 ---
 
+<detauls><summary>
+
+### UITable
+
+</summary>
+
 - You can create your own [Kotlin DSL][Kotlin DSL Link] style builders.
     - [TableBuilder.kt][Table Builder Link] is a simple example of a builder that can be used to create a table for use in a Scriptable script.
       - ```kotlin
@@ -298,8 +304,11 @@
         table.addRow(headerRow)
         await table.present()
         ```
-  
-</details>
+
+    - The result:
+      -![Kotlin Table Present][kotlin-table-present Image]
+    </details>
+
 
 
 <details><summary>
@@ -361,6 +370,10 @@
 
 [Table Builder Link]: library/src/jsMain/kotlin/TableBuilder.kt
 [Table Builder Example Link]: scripts/show-table-example/src/jsMain/kotlin/main.kt
+
+[kotlin-alert-present Image]: example-images/kotlin-alert-present.png
+[kotlin-alert-result Image]: example-images/kotlin-alert-result.png
+[kotlin-table-present Image]: example-images/kotlin-table-present.png
 
 
 
