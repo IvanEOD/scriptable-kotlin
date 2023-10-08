@@ -56,7 +56,9 @@
 
 ## About the Project
 
-- [Kotlin][Kotlin Link] implementation of [Scriptable][Scriptable Link] for iOS, utilizing [Dukat][dukat Link] to generate [external declarations][External Declarations Link] which provide type information from the [iOS Scriptable Types][ios-scriptable-types Link] project. 
+- This project allows the use of [Kotlin][Kotlin Link] with the [Scriptable iOS][Scriptable Link] app. It is not meant to be better or easier, I just love using Kotlin.
+
+- This is made possible utilizing [Dukat][dukat Link] to generate [external declarations][External Declarations Link] which provide type information from the [iOS Scriptable Types][ios-scriptable-types Link] project. 
 - Once you have written your own scripts you can use the [Scriptable][Scriptable Link] app to run them on your iOS device.
 - Uses [esbuild][esbuild] to bundle each script into its own file, only including dependencies that are actually used by the script.
 - To be able to efficiently create your own scripts you will need a basic understanding of [Kotlin][Kotlin Link].
@@ -278,6 +280,15 @@
 </summary>
 
 ###### The [library][Library Project Link] and [scripts][Scripts Project Link] contain the source code used in these examples.
+###### The examples will include the Kotlin version and Javascript equivalent. Not as a comparison of better or worse, but to show what it is doing.
+
+<details><summary>
+
+###### You can create your own [Kotlin DSL][Kotlin DSL Link] style builders.
+
+</summary>
+
+---
 
 <details><summary>
 
@@ -285,39 +296,35 @@
 
 </summary>
 
----
-
 <a name="table-builder-example"></a>
 
-- You can create your own [Kotlin DSL][Kotlin DSL Link] style builders.
-    - [TableBuilder.kt][Table Builder Link] is a simple example of a builder that can be used to create a table for use in a Scriptable script.
-      - ```kotlin
-        fun main() {
-            val table = buildTable {
-                row {
-                    isHeader()
-                    text("Example Title", "example subtitle") 
-                }
+
+- [TableBuilder.kt][Table Builder Link] is a simple example of a builder that can be used to create a table for use in a Scriptable script.
+  - ```kotlin
+    fun main() {
+        val table = buildTable {
+            row {
+                isHeader()
+                text("Example Title", "example subtitle") 
             }
-            table.present()
         }
-        ``` 
-      - The Javascript equivalent:
-      - ```js
-        const table = new UITable()       
-        const headerRow = new UITableRow()
-        headerRow.isHeader = true
-        headerRow.addText("Example Title", "example subtitle")
-        table.addRow(headerRow)
-        await table.present()
-        ```
+        table.present()
+    }
+    ``` 
+- The Javascript equivalent:
+  - ```js
+    const table = new UITable()       
+    const headerRow = new UITableRow()
+    headerRow.isHeader = true
+    headerRow.addText("Example Title", "example subtitle")
+    table.addRow(headerRow)
+    await table.present()
+    ```
 
-    - The result:
-      -![Kotlin Table Present][kotlin-table-present Image]
+- The result:
+  ![Kotlin Table Present][kotlin-table-present Image]
 
 
-
----
 <p align="right">(<a href="#scriptable-kotlin">back to top</a>)</p>
 </details>
 
@@ -325,13 +332,71 @@
 
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Alert:
     
-</summary></details>
+</summary>
+
+<a name="alert-builder-example"></a>
 
 
+- [AlertBuilder.kt][Alert Builder Link] 
+  - ```kotlin
+    fun main() {
+
+        val alert = buildAlert(
+            "Kotlin Alert",
+            "This is an alert from Kotlin!"
+        ) {
+            input("username", "Username")
+            secureInput("password", "Password")
+            action("Login")
+            cancel()
+        }
+    
+        alert.present {
+            when (this) {
+                is AlertResult.Fulfilled -> {
+                    if (wasCancelled) {
+                        QuickLook.present("Alert was cancelled")
+                        return@present
+                    }
+                    val username = inputs["username"]
+                    val password = inputs["password"]
+                    QuickLook.present("Username: $username\nPassword: $password")
+                }
+                is AlertResult.Rejected -> QuickLook.present("Alert was rejected with message: $message")
+            }
+        }
+    
+    }
+    ```
+- The Javascript equivalent:
+  - ```js
+    const alert = new Alert()
+    alert.title = "Kotlin Alert"
+    alert.message = "This is an alert from Kotlin!"
+    alert.addTextField("Username")
+    alert.addSecureTextField("Password")
+    alert.addAction("Login")
+    alert.addCancelAction("Cancel")
+    const result = await alert.presentAlert()
+    if (result === -1) {
+        QuickLook.present("Alert was cancelled")
+    } else {
+        const username = alert.textFieldValue(0)
+        const password = alert.textFieldValue(1)
+        QuickLook.present(`Username: ${username}\nPassword: ${password}`)
+    }
+    ```
+- The result:
+  ![Alert Present][kotlin-alert-present Image]
+  ![Alert Result][kotlin-alert-result Image]
+  
+<p align="right">(<a href="#scriptable-kotlin">back to top</a>)</p>
+</details>
 
 
 ---
 <p align="right">(<a href="#scriptable-kotlin">back to top</a>)</p>
+</details>
 </details>
 </details>
 
@@ -395,6 +460,9 @@
 
 [Table Builder Link]: library/src/jsMain/kotlin/TableBuilder.kt
 [Table Builder Example Link]: scripts/show-table-example/src/jsMain/kotlin/main.kt
+
+[Alert Builder Link]: library/src/jsMain/kotlin/AlertBuilder.kt
+[Alert Builder Example Link]: scripts/show-alert-example/src/jsMain/kotlin/main.kt
 
 [kotlin-alert-present Image]: example-images/kotlin-alert-present.png
 [kotlin-alert-result Image]: example-images/kotlin-alert-result.png
